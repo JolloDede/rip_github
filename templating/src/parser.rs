@@ -1,3 +1,4 @@
+use syn::Ident;
 use syn::LitStr;
 use syn::Result;
 use syn::parse::{Parse, ParseStream};
@@ -26,6 +27,34 @@ pub enum Node {
 
 impl Parse for Node {
     fn parse(input: ParseStream) -> Result<Self> {
-        todo!()
+        if input.peek(Ident) {
+            let ident: Ident = input.parse()?;
+            let content;
+            syn::braced!(content in input);
+            let children = parse_children(&content)?;
+            return Ok(Node::Element {
+                name: ident.to_string(),
+                children: children,
+            });
+        }
+
+        if input.peek(LitStr) {
+            let lit: LitStr = input.parse()?;
+            return Ok(Node::Text(lit.value()));
+        }
+
+        Err(input.error("expected string literal or element"))
     }
+}
+
+fn parse_children(input: ParseStream) -> Result<Vec<Node>> {
+    let mut nodes = Vec::new();
+    while !input.is_empty() {
+        if input.peek(syn::Token![,]) {
+            let _: syn::Token![,] = input.parse()?;
+            continue;
+        }
+        nodes.push(input.parse()?);
+    }
+    Ok(nodes)
 }
