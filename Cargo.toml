@@ -1,0 +1,10 @@
+[package]
+name = "rip_git"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+members = [".", "templating"]
+
+[dependencies]
+# bewerbungs_tool_api = { path = "api" }
