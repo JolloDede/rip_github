@@ -37,6 +37,10 @@
               })
               pkg-config
               pkgs.lldb
+
+              pkgs.just
+
+              pkgs.sea-orm-cli
             ];
             RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
             RUST_BACKTRACE = 1;

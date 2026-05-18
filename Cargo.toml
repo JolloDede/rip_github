@@ -4,7 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [".", "templating"]
+members = [".", "templating", "migration", "entity"]
 
 [dependencies]
 # bewerbungs_tool_api = { path = "api" }
+migration = { path = "migration" }
+templating = { path = "templating" }
+entity = { path = "entity" }
