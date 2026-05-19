@@ -1,3 +1,5 @@
 fn main() {
-    println!("Hello, world!");
+    dotenv::dotenv().ok();
+
+    server::main();
 }
