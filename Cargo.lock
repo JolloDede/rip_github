@@ -2293,6 +2293,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "axum",
+ "templating",
  "tokio",
 ]
 
@@ -2687,6 +2688,7 @@ checksum = "55937e1799185b12863d447f42597ed69d9928686b8d88a1df17376a097d8369"
 name = "templating"
 version = "0.1.0"
 dependencies = [
+ "axum",
  "proc-macro2",
  "quote",
  "syn 2.0.117",

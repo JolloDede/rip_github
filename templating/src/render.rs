@@ -6,12 +6,22 @@ use crate::{Attribute, Node, consts::SPECIAL_ELEMENTS};
 
 pub fn render(nodes: Vec<Node>) -> TokenStream {
     let statements = nodes.iter().map(render_node);
-    quote! {
+    let body = quote! {
         {
             let mut output = String::new();
             #(#statements)*
             output
         }
+    };
+
+    #[cfg(feature = "axum")]
+    {
+        return quote! { ::axum::response::Html(#body) };
+    }
+
+    #[cfg(not(feature = "axum"))]
+    {
+        return body;
     }
 }
 
