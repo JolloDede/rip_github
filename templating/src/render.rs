@@ -72,7 +72,11 @@ fn render_node(node: &Node) -> TokenStream {
 }
 
 fn render_attribute(attribute: &Attribute) -> TokenStream {
-    let name_lit = LitStr::new(&attribute.name.replace("_", "-"), Span::call_site());
+    let attribute_name: &mut String = &mut attribute.name.replace("_", "-").as_str().into();
+    if attribute_name.contains("#") {
+        attribute_name.replace_range(0..2, "");
+    }
+    let name_lit = LitStr::new(attribute_name, Span::call_site());
     let value_lit = LitStr::new(&attribute.value, Span::call_site());
 
     quote! {

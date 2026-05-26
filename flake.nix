@@ -41,6 +41,8 @@
               pkgs.just
 
               pkgs.sea-orm-cli
+              pkgs.tailwindcss_4
+              pkgs.tailwindcss-language-server
             ];
             RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
             RUST_BACKTRACE = 1;

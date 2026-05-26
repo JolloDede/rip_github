@@ -1,5 +1,5 @@
 pub const SPECIAL_ELEMENTS: &[&str] = &["hr", "img"];
-pub const HTML_ATTRIBUTES: &[&str] = &["class", "src", "alt"];
+pub const HTML_ATTRIBUTES: &[&str] = &["id", "name", "r#type", "class", "src", "alt"];
 pub const HTMX_ATTRIBUTES: &[&str] = &[
     "hx_boost",
     "hx_confirm",
