@@ -1,4 +1,4 @@
-use templating::{Component, html};
+use templating_macro::{Component, html};
 
 #[test]
 fn basic() {

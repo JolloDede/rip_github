@@ -4,12 +4,13 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [".", "templating", "migration", "entity", "server"]
+members = [".", "templating", "templating_macro", "migration", "entity", "server"]
 
 [dependencies]
+dotenv = "0.15.0"
 # bewerbungs_tool_api = { path = "api" }
 migration = { path = "migration" }
-templating = { path = "templating" }
 entity = { path = "entity" }
 server = { path = "server" }
-dotenv = "0.15.0"
+templating = { path = "templating" }
+templating_macro = { path = "templating_macro" }

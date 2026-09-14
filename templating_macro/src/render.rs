@@ -5,17 +5,7 @@ use syn::LitStr;
 use crate::{Attribute, Node, consts::SPECIAL_ELEMENTS};
 
 pub fn render(nodes: Vec<Node>) -> TokenStream {
-    let body = render_string(nodes);
-
-    #[cfg(feature = "axum")]
-    {
-        return quote! { ::axum::response::Html(#body) };
-    }
-
-    #[cfg(not(feature = "axum"))]
-    {
-        body
-    }
+    render_string(nodes)
 }
 
 pub fn render_string(nodes: Vec<Node>) -> TokenStream {
