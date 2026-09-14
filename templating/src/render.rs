@@ -1,18 +1,11 @@
-use proc_macro2::{Span, TokenStream};
+use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
 use syn::LitStr;
 
 use crate::{Attribute, Node, consts::SPECIAL_ELEMENTS};
 
 pub fn render(nodes: Vec<Node>) -> TokenStream {
-    let statements = nodes.iter().map(render_node);
-    let body = quote! {
-        {
-            let mut output = String::new();
-            #(#statements)*
-            output
-        }
-    };
+    let body = render_string(nodes);
 
     #[cfg(feature = "axum")]
     {
@@ -21,16 +14,28 @@ pub fn render(nodes: Vec<Node>) -> TokenStream {
 
     #[cfg(not(feature = "axum"))]
     {
-        return body;
+        body
     }
 }
 
-fn render_node(node: &Node) -> TokenStream {
+pub fn render_string(nodes: Vec<Node>) -> TokenStream {
+    let output = Ident::new("output", Span::call_site());
+    let statements = nodes.iter().map(|node| render_node(node, &output));
+    quote! {
+        {
+            let mut output = String::new();
+            #(#statements)*
+            output
+        }
+    }
+}
+
+fn render_node(node: &Node, output: &Ident) -> TokenStream {
     match node {
         Node::Text(text) => {
             let lit = LitStr::new(text, Span::call_site());
             quote! {
-                output.push_str(#lit);
+                #output.push_str(#lit);
             }
         }
         Node::Element {
@@ -39,8 +44,10 @@ fn render_node(node: &Node) -> TokenStream {
             children,
         } => {
             let name_lit = LitStr::new(name, Span::call_site());
-            let attributes = attributes.iter().map(render_attribute);
-            let child_statements = children.iter().map(render_node);
+            let attributes = attributes
+                .iter()
+                .map(|attribute| render_attribute(attribute, output));
+            let child_statements = children.iter().map(|node| render_node(node, output));
 
             if SPECIAL_ELEMENTS.contains(&name.as_str()) {
                 if child_statements.count() > 0 {
@@ -50,28 +57,48 @@ fn render_node(node: &Node) -> TokenStream {
                     );
                 }
                 quote! {
-                    output.push_str("<");
-                    output.push_str(#name_lit);
+                    #output.push_str("<");
+                    #output.push_str(#name_lit);
                     #(#attributes)*
-                    output.push_str(">");
+                    #output.push_str(">");
                 }
             } else {
                 quote! {
-                    output.push_str("<");
-                    output.push_str(#name_lit);
+                    #output.push_str("<");
+                    #output.push_str(#name_lit);
                     #(#attributes)*
-                    output.push_str(">");
+                    #output.push_str(">");
                     #(#child_statements)*
-                    output.push_str("</");
-                    output.push_str(#name_lit);
-                    output.push_str(">");
+                    #output.push_str("</");
+                    #output.push_str(#name_lit);
+                    #output.push_str(">");
                 }
+            }
+        }
+        Node::Component { name, children } => {
+            let component_name = syn::Ident::new(name, Span::call_site());
+            let component_output = Ident::new("__component_children", Span::call_site());
+            let child_statements = children
+                .iter()
+                .map(|node| render_node(node, &component_output));
+
+            quote! {
+                {
+                    let mut #component_output = String::new();
+                    #(#child_statements)*
+                    #output.push_str(&#component_name(#component_output));
+                }
+            }
+        }
+        Node::Variable(expression) => {
+            quote! {
+                #output.push_str(&::std::string::ToString::to_string(&(#expression)));
             }
         }
     }
 }
 
-fn render_attribute(attribute: &Attribute) -> TokenStream {
+fn render_attribute(attribute: &Attribute, output: &Ident) -> TokenStream {
     let attribute_name: &mut String = &mut attribute.name.replace("_", "-").as_str().into();
     if attribute_name.contains("#") {
         attribute_name.replace_range(0..2, "");
@@ -80,10 +107,10 @@ fn render_attribute(attribute: &Attribute) -> TokenStream {
     let value_lit = LitStr::new(&attribute.value, Span::call_site());
 
     quote! {
-        output.push_str(" ");
-        output.push_str(#name_lit);
-        output.push_str("=\"");
-        output.push_str(#value_lit);
-        output.push_str("\"");
+        #output.push_str(" ");
+        #output.push_str(#name_lit);
+        #output.push_str("=\"");
+        #output.push_str(#value_lit);
+        #output.push_str("\"");
     }
 }
