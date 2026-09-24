@@ -26,7 +26,12 @@ impl Parse for HtmlInput {
 
 pub struct Attribute {
     pub name: String,
-    pub value: String,
+    pub value: AttributeValue,
+}
+
+pub enum AttributeValue {
+    Literal(String),
+    Expression(syn::Expr),
 }
 
 pub enum Node {
@@ -107,10 +112,16 @@ fn parse_attributes(input: ParseStream) -> Result<Vec<Attribute>> {
             //     return Err(syn::Error::new(name.span(), "invalid attribute"));
             // }
             let _: syn::Token![:] = input.parse()?;
-            let value: LitStr = input.parse()?;
+            let value = if input.peek(Brace) {
+                let content;
+                syn::braced!(content in input);
+                AttributeValue::Expression(content.parse()?)
+            } else {
+                AttributeValue::Literal(input.parse::<LitStr>()?.value())
+            };
             attributes.push(Attribute {
                 name: name.to_string(),
-                value: value.value(),
+                value,
             });
 
             if input.peek(syn::Token![,]) {

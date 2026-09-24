@@ -2,7 +2,7 @@ use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
 use syn::LitStr;
 
-use crate::{Attribute, Node, consts::SPECIAL_ELEMENTS};
+use crate::{Attribute, AttributeValue, Node, consts::SPECIAL_ELEMENTS};
 
 pub fn render(nodes: Vec<Node>) -> TokenStream {
     render_string(nodes)
@@ -94,13 +94,26 @@ fn render_attribute(attribute: &Attribute, output: &Ident) -> TokenStream {
         attribute_name.replace_range(0..2, "");
     }
     let name_lit = LitStr::new(attribute_name, Span::call_site());
-    let value_lit = LitStr::new(&attribute.value, Span::call_site());
+
+    let value = match &attribute.value {
+        AttributeValue::Literal(value) => {
+            let value_lit = LitStr::new(value, Span::call_site());
+            quote! {
+                #output.push_str(#value_lit);
+            }
+        }
+        AttributeValue::Expression(expression) => {
+            quote! {
+                #output.push_str(&::std::string::ToString::to_string(&(#expression)));
+            }
+        }
+    };
 
     quote! {
         #output.push_str(" ");
         #output.push_str(#name_lit);
         #output.push_str("=\"");
-        #output.push_str(#value_lit);
+        #value
         #output.push_str("\"");
     }
 }

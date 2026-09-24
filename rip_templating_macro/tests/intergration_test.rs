@@ -109,17 +109,29 @@ fn conditionals() {
 }
 
 #[test]
-fn bla() {
-    html! {
-        html {
-            lang: "de",
-            head {
-                meta { charset: "UTF-8" }
-                meta { name: "viewport" content: "width=device-width, initial-scale=1.0" }
-                meta { name: "color-scheme" content: "light dark" }
-                link { rel: "stylesheet" href: "/assets/css/style.css" }
-                title { {"bla"} }
+fn mapping_lists() {
+    let list = vec!["bla", "test"];
+    let test = html! {
+        ul {
+            {
+                list.iter().map(|item| html! { li { {format!("{}", item)} } }).collect::<String>()
             }
         }
     };
+
+    assert_eq!(test, "<ul><li>bla</li><li>test</li></ul>");
+}
+
+#[test]
+fn expressions_as_attributes() {
+    let class = "test";
+
+    let test = html! {
+        p {
+            class: {class},
+            name: {"test"}
+        }
+    };
+
+    assert_eq!(test, "<p class=\"test\" name=\"test\"></p>")
 }

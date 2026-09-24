@@ -11,5 +11,5 @@ readme = "README.md"
 axum = ["dep:axum"]
 
 [dependencies]
-rip_templating_macro = "0.1.1"
+rip_templating_macro = "0.1.2"
 axum = { version = "0.8.9", optional = true }

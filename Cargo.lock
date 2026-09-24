@@ -1883,14 +1883,12 @@ name = "rip_templating"
 version = "0.1.2"
 dependencies = [
  "axum",
- "rip_templating_macro 0.1.1",
+ "rip_templating_macro 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "rip_templating_macro"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "614f29517ffd78ed7eb58c957df6665cac3d724e13d41936c6e8f4bce0dc0e25"
+version = "0.1.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1900,6 +1898,8 @@ dependencies = [
 [[package]]
 name = "rip_templating_macro"
 version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed89848fda64551a0e9840080c80a8ddd9f2b0f09fc0d85959983694749526b8"
 dependencies = [
  "proc-macro2",
  "quote",
