@@ -10,5 +10,5 @@ description = "Library for rendering html, templating inside rust code use with 
 axum = ["dep:axum"]
 
 [dependencies]
-rip_templating_macro = { path = "../rip_templating_macro" }
+rip_templating_macro = "0.1.0"
 axum = { version = "0.8.9", optional = true }
