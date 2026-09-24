@@ -103,9 +103,9 @@ fn parse_attributes(input: ParseStream) -> Result<Vec<Attribute>> {
     while !input.is_empty() {
         if input.peek(Ident) && input.peek2(syn::Token![:]) {
             let name: Ident = input.parse()?;
-            if !valid_attributes(name.to_string().as_str()) {
-                return Err(syn::Error::new(name.span(), "invalid attribute"));
-            }
+            // if !valid_attributes(name.to_string().as_str()) {
+            //     return Err(syn::Error::new(name.span(), "invalid attribute"));
+            // }
             let _: syn::Token![:] = input.parse()?;
             let value: LitStr = input.parse()?;
             attributes.push(Attribute {
