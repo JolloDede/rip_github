@@ -16,14 +16,14 @@ Add this crate to your project:
 
 ```toml
 [dependencies]
-rip_templating = { version = "0.1.1" }
+rip_templating = { version = "0.1.2" }
 ```
 
 If you want Axum integration, enable the feature:
 
 ```toml
 [dependencies]
-rip_templating = { version = "0.1.1", features = ["axum"] }
+rip_templating = { version = "0.1.2", features = ["axum"] }
 ```
 
 ## Usage
