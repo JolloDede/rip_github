@@ -15,5 +15,5 @@ dotenv = "0.15.0"
 migration = { path = "migration" }
 entity = { path = "entity" }
 server = { path = "server" }
-rip_templating = { path = "rip_templating" }
-rip_templating_macro = { path = "rip_templating_macro" }
+# rip_templating = { path = "rip_templating" }
+# rip_templating_macro = { path = "rip_templating_macro" }

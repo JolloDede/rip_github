@@ -44,7 +44,7 @@ pub fn Component(_attr: TokenStream, input: TokenStream) -> TokenStream {
         }
         Some(Stmt::Macro(statement)) => {
             statement.semi_token = None;
-            statement.mac.path = parse_quote!(::templating_macro::component_html);
+            statement.mac.path = parse_quote!(::rip_templating_macro::component_html);
         }
         _ => {
             return syn::Error::new_spanned(

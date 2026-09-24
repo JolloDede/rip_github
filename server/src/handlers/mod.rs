@@ -1,5 +1,5 @@
 use axum::{Router, http::StatusCode, response::Html, routing::get};
-use templating::html;
+use rip_templating::html;
 use tower_http::trace::TraceLayer;
 
 pub fn router() -> Router {

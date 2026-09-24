@@ -1,4 +1,4 @@
-use templating_macro::{Component, html};
+use rip_templating_macro::{Component, html};
 
 #[test]
 fn basic() {
