@@ -1,0 +1,15 @@
+[package]
+name = "rip_templating_macro"
+version = "0.1.0"
+edition = "2024"
+author = "Dennis Lee <dennis.lee@gmx.ch>"
+license = "MIT"
+description = "proc_macro for rendering html, templating inside rust code use with axum and htmx support"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1.0.106"
+quote = "1.0.45"
+syn = { version = "2.0.117", features = ["full"] }

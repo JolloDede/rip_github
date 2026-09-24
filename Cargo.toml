@@ -1,10 +1,13 @@
 [package]
-name = "rip_git"
+name = "rip_github"
 version = "0.1.0"
 edition = "2024"
+author = "Dennis Lee <dennis.lee@gmx.ch>"
+license = "MIT"
+description = ""
 
 [workspace]
-members = [".", "templating", "templating_macro", "migration", "entity", "server"]
+members = [".", "rip_templating", "rip_templating_macro", "migration", "entity", "server"]
 
 [dependencies]
 dotenv = "0.15.0"
@@ -12,5 +15,5 @@ dotenv = "0.15.0"
 migration = { path = "migration" }
 entity = { path = "entity" }
 server = { path = "server" }
-templating = { path = "templating" }
-templating_macro = { path = "templating_macro" }
+rip_templating = { path = "rip_templating" }
+rip_templating_macro = { path = "rip_templating_macro" }

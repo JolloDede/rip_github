@@ -1,0 +1,14 @@
+[package]
+name = "rip_templating"
+version = "0.1.0"
+edition = "2024"
+author = "Dennis Lee <dennis.lee@gmx.ch>"
+license = "MIT"
+description = "Library for rendering html, templating inside rust code use with axum and htmx support"
+
+[features]
+axum = ["dep:axum"]
+
+[dependencies]
+rip_templating_macro = { path = "../rip_templating_macro" }
+axum = { version = "0.8.9", optional = true }

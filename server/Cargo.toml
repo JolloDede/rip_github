@@ -10,4 +10,4 @@ tokio = "1.52.3"
 tower-http = { version = "0.6.11", features = ["trace"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-templating = { path = "../templating", features = ["axum"] }
+rip_templating = { path = "../rip_templating", features = ["axum"] }

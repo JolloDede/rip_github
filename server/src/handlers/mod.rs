@@ -18,8 +18,15 @@ pub fn router() -> Router {
         .route("/login", get(get_login_form))
 }
 
+fn base_layout() {
+    html!(
+        @Body
+    )
+}
+
 async fn get_login_form() -> Result<Html<String>, StatusCode> {
     Ok(html!(
+        @layout(base_layout) {
         form {
             label {
                 class: "",
@@ -32,6 +39,7 @@ async fn get_login_form() -> Result<Html<String>, StatusCode> {
                     name: "username",
                 }
             }
+        }
         }
     ))
 }

@@ -1,4 +1,4 @@
-pub use templating_macro::{Component, component_html as __component_html, html as __html};
+pub use rip_templating_macro::{Component, component_html as __component_html, html as __html};
 
 #[cfg(feature = "axum")]
 #[macro_export]
