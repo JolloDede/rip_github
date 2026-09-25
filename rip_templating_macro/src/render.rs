@@ -100,6 +100,35 @@ fn render_node(node: &Node, output: &Ident) -> TokenStream {
                 }
             }
         }
+        Node::If {
+            condition,
+            then_branch,
+            else_branch,
+        } => {
+            let then_statements = then_branch
+                .iter()
+                .map(|node| render_node(node, output));
+
+            let else_statements = else_branch.as_ref().map(|nodes| {
+                nodes.iter().map(|node| render_node(node, output))
+            });
+
+            if let Some(else_statements) = else_statements {
+                quote! {
+                    if #condition {
+                        #(#then_statements)*
+                    } else {
+                        #(#else_statements)*
+                    }
+                }
+            } else {
+                quote! {
+                    if #condition {
+                        #(#then_statements)*
+                    }
+                }
+            }
+        }
     }
 }
 

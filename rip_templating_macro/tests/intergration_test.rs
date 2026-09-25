@@ -109,6 +109,30 @@ fn conditionals() {
 }
 
 #[test]
+fn inline_condition() {
+    let test_true = html! {
+        p {
+            if true {
+                "test"
+            }
+        }
+    };
+
+    let test_false = html! {
+        p {
+            if false {
+                ""
+            } else {
+                "test"
+            }
+        }
+    };
+
+    assert_eq!(test_true, "<p>test</p>");
+    assert_eq!(test_false, "<p>test</p>");
+}
+
+#[test]
 fn mapping_lists() {
     let list = vec!["bla", "test"];
     let test = html! {

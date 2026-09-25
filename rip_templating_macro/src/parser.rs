@@ -53,6 +53,11 @@ pub enum Node {
         list: Ident,
         children: Vec<Node>,
     },
+    If {
+        condition: syn::Expr,
+        then_branch: Vec<Node>,
+        else_branch: Option<Vec<Node>>,
+    },
 }
 
 impl Parse for Node {
@@ -107,6 +112,29 @@ impl Parse for Node {
                 local,
                 list,
                 children: expression,
+            });
+        }
+
+        if input.peek(Token![if]) {
+            let _: Token![if] = input.parse()?;
+            let condition: syn::Expr = input.parse()?;
+            let content;
+            syn::braced!(content in input);
+            let then_branch = parse_children(&content)?;
+
+            let else_branch = if input.peek(Token![else]) {
+                let _: Token![else] = input.parse()?;
+                let content;
+                syn::braced!(content in input);
+                Some(parse_children(&content)?)
+            } else {
+                None
+            };
+
+            return Ok(Node::If {
+                condition,
+                then_branch,
+                else_branch,
             });
         }
 
