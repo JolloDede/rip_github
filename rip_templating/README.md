@@ -64,6 +64,49 @@ let button = html! {
 assert!(button.contains("hx-get=\"/items\""));
 ```
 
+### Conditionals
+
+Use Rust-like `if` and `else` blocks to render content conditionally:
+
+```rust
+use rip_templating::html;
+
+let logged_in = true;
+
+let page = html! {
+    div {
+        if logged_in {
+            p { "Welcome back!" }
+        } else {
+            p { "Please sign in." }
+        }
+    }
+};
+
+assert!(page.contains("Welcome back!"));
+```
+
+### For loops
+
+Use `for` loops to render repeated content from an iterable:
+
+```rust
+use rip_templating::html;
+
+let items = vec!["One", "Two", "Three"];
+
+let list = html! {
+    ul {
+        for item in items {
+            li { {item} }
+        }
+    }
+};
+
+assert!(list.contains("<li>One</li>"));
+assert!(list.contains("<li>Three</li>"));
+```
+
 ### Components
 
 ```rust
