@@ -1,8 +1,10 @@
 use syn::Ident;
 use syn::LitStr;
 use syn::Result;
+use syn::Token;
 use syn::parse::{Parse, ParseStream};
 use syn::token::Brace;
+use syn::token::For;
 
 use crate::consts::HTML_ATTRIBUTES;
 use crate::consts::HTMX_ATTRIBUTES;
@@ -46,6 +48,11 @@ pub enum Node {
         name: String,
         children: Vec<Node>,
     },
+    Loop {
+        local: Ident,
+        list: Ident,
+        children: Vec<Node>,
+    },
 }
 
 impl Parse for Node {
@@ -85,6 +92,22 @@ impl Parse for Node {
             syn::braced!(content in input);
             let expression = content.parse()?;
             return Ok(Node::Variable(expression));
+        }
+
+        if input.peek(Token![for]) {
+            let _: Token![for] = input.parse()?;
+            let local: Ident = input.parse()?;
+            let _: Token![in] = input.parse()?;
+            let list: Ident = input.parse()?;
+            let content;
+            syn::braced!(content in input);
+            let expression = parse_children(&content)?;
+
+            return Ok(Node::Loop {
+                local,
+                list,
+                children: expression,
+            });
         }
 
         Err(input.error("expected string literal or element"))

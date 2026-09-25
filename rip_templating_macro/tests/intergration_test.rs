@@ -97,7 +97,7 @@ fn conditionals() {
     let test_false = html! {
         p {
             {
-                if false{
+                if false {
                     "test"
                 }else{""}
             }
@@ -115,6 +115,22 @@ fn mapping_lists() {
         ul {
             {
                 list.iter().map(|item| html! { li { {format!("{}", item)} } }).collect::<String>()
+            }
+        }
+    };
+
+    assert_eq!(test, "<ul><li>bla</li><li>test</li></ul>");
+}
+
+#[test]
+fn loops() {
+    let list = vec!["bla", "test"];
+    let test = html! {
+        ul {
+            for item in list {
+                li {
+                    {item}
+                }
             }
         }
     };

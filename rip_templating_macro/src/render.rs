@@ -85,6 +85,21 @@ fn render_node(node: &Node, output: &Ident) -> TokenStream {
                 #output.push_str(&::std::string::ToString::to_string(&(#expression)));
             }
         }
+        Node::Loop {
+            local,
+            list,
+            children,
+        } => {
+            let child_statements = children
+                .iter()
+                .map(|node| render_node(node, output));
+
+            quote! {
+                for #local in #list {
+                    #(#child_statements)*
+                }
+            }
+        }
     }
 }
 
