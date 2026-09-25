@@ -1,6 +1,6 @@
 [package]
 name = "rip_templating"
-version = "0.1.2"
+version = "0.2.2"
 edition = "2024"
 author = "Dennis Lee <dennis.lee@gmx.ch>"
 license = "MIT"
@@ -11,5 +11,5 @@ readme = "README.md"
 axum = ["dep:axum"]
 
 [dependencies]
-rip_templating_macro = "0.1.2"
+rip_templating_macro = "0.2.1"
 axum = { version = "0.8.9", optional = true }

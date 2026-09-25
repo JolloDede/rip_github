@@ -1,6 +1,6 @@
 [package]
 name = "rip_templating_macro"
-version = "0.1.2"
+version = "0.2.1"
 edition = "2024"
 author = "Dennis Lee <dennis.lee@gmx.ch>"
 license = "MIT"
